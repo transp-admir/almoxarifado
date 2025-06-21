@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% block titulo %}Editar Saída{% endblock %}
+
+{% block conteudo %}
+<h2>Editar Saída</h2>
+
+<form method="POST">
+  <label>Descrição:</label><br>
+  <input type="text" value="{{ saida.descricao }}" readonly style="width: 100%; padding: 8px;"><br><br>
+
+  <label>Quantidade:</label><br>
+  <input type="text" name="quantidade" value="{{ saida.quantidade }}" style="width: 100%; padding: 8px;"><br><br>
+
+  <label>Placa:</label><br>
+  <input type="text" name="placa" value="{{ saida.placa }}" style="width: 100%; padding: 8px;"><br><br>
+
+  <label>Data de Saída:</label><br>
+  <input type="text" name="data_saida" value="{{ saida.data_saida }}" style="width: 100%; padding: 8px;"><br><br>
+
+  <label>Referência:</label><br>
+  <input type="text" name="referencia" value="{{ saida.referencia }}" style="width: 100%; padding: 8px;"><br><br>
+
+  <button type="submit" style="background-color: #cc0000; color: white; padding: 10px 20px; border: none;">Salvar Alterações</button>
+</form>
+{% endblock %}

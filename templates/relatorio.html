@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% block titulo %}Relatório de Saídas{% endblock %}
+
+{% block conteudo %}
+<h2>Relatório de Saídas</h2>
+<form method="POST" action="/saidas/relatorio">
+  <label>Filtrar por Placa:</label>
+  <input type="text" name="placa" value="{{ placa }}" placeholder="Ex: ABC1234 ou ABC" style="padding: 6px;">
+
+  <button type="submit" name="acao" value="buscar">🔎 Buscar</button>
+  <button type="submit" name="acao" value="pdf" style="margin-left: 10px; background-color: #003366; color: white;">📄 Gerar PDF</button>
+</form>
+
+
+
+{% if registros %}
+  <div style="max-height: 400px; overflow-y: auto; border: 1px solid #ccc; border-radius: 6px;">
+    <table border="1" cellpadding="6" cellspacing="0" style="width: 100%; font-size: 14px;">
+      <thead style="background-color: #003366; color: white; position: sticky; top: 0;">
+        <tr>
+          <th>ID</th>
+          <th>Descrição</th>
+          <th>Quantidade</th>
+          <th>Placa</th>
+          <th>Data</th>
+          <th>Referência</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for item in registros %}
+        <tr>
+          <td>{{ item.item_id }}</td>
+          <td>{{ item.descricao }}</td>
+          <td>{{ item.quantidade }}</td>
+          <td>{{ item.placa }}</td>
+          <td>{{ item.data_saida }}</td>
+          <td>{{ item.referencia }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% else %}
+  <p>Nenhum registro encontrado.</p>
+{% endif %}
+{% endblock %}

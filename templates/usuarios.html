@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+{% block titulo %}Gerenciar Usuários{% endblock %}
+
+{% block conteudo %}
+<h2>Gerenciar Usuários</h2>
+
+<form method="POST" action="/usuarios/adicionar" style="margin-bottom: 30px;">
+  <fieldset style="border: 1px solid #ccc; padding: 20px; border-radius: 8px;">
+    <legend><strong>Novo Usuário</strong></legend>
+
+    <label>Nome:</label><br>
+    <input type="text" name="nome" required style="width: 100%; padding: 8px;"><br><br>
+
+    <label>Senha:</label><br>
+    <input type="password" name="senha" required style="width: 100%; padding: 8px;"><br><br>
+
+    <label>Tipo:</label><br>
+    <select name="tipo" required style="width: 100%; padding: 8px;">
+      <option value="COMUM">COMUM</option>
+      <option value="MASTER">MASTER</option>
+    </select><br><br>
+
+    <button type="submit" style="background-color: #cc0000; color: white; padding: 10px 20px; border: none;">
+      Adicionar Usuário
+    </button>
+  </fieldset>
+</form>
+
+<h3>Usuários Cadastrados</h3>
+
+<table border="1" cellpadding="6" cellspacing="0" style="width: 100%; margin-top: 15px;">
+  <thead>
+    <tr>
+      <th>ID</th><th>Nome</th><th>Tipo</th><th>Ação</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for u in usuarios %}
+    <tr>
+      <td>{{ u.id }}</td>
+      <td>{{ u.nome }}</td>
+      <td>{{ u.tipo }}</td>
+      <td>
+        {% if u.nome != 'master' %}
+        <form method="POST" action="/usuarios/remover/{{ u.id }}" style="display: inline;">
+          <button type="submit" onclick="return confirm('Deseja remover o usuário {{ u.nome }}?')" style="background-color: #990000; color: white; border: none; padding: 6px 12px;">
+            Remover
+          </button>
+        </form>
+        {% else %}
+        <em>Protegido</em>
+        {% endif %}
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

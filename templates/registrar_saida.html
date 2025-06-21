@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+{% block titulo %}Registrar Saída de Itens{% endblock %}
+
+{% block conteudo %}
+<h2>Registrar Saída de Itens</h2>
+
+<div style="display: flex; gap: 30px; align-items: flex-start; flex-wrap: wrap;">
+
+  <!-- Formulário de Saída -->
+  <div style="flex: 1; min-width: 300px;">
+    <form method="POST">
+      <label><strong>ID do Item:</strong></label><br>
+      <input type="text" name="item_id" value="{{ item_id }}" required placeholder="Digite o ID do item" style="width: 100%; padding: 8px;"><br><br>
+
+      <label><strong>Nome do Item:</strong></label><br>
+      <input type="text" value="{{ descricao }}" readonly style="width: 100%; padding: 8px;"><br><br>
+
+      <label><strong>Referência:</strong></label><br>
+      <input type="text" value="{{ referencia }}" readonly style="width: 100%; padding: 8px;"><br><br>
+
+      <label><strong>Quantidade a remover:</strong></label><br>
+      <input type="text" name="quantidade" value="{{ quantidade }}" style="width: 100%; padding: 8px;"><br><br>
+
+      <label><strong>Placa do veículo:</strong></label><br>
+      <input type="text" name="placa" value="{{ placa }}" placeholder="Ex: ABC-1234" style="width: 100%; padding: 8px;"><br><br>
+
+      <button type="submit" style="background-color: #cc0000; color: white; padding: 10px 20px; border: none;">
+        Registrar Saída
+      </button>
+    </form>
+  </div>
+
+  <!-- Lista de Itens com rolagem -->
+  <div style="flex: 1.5; min-width: 400px; max-height: 500px; overflow-y: auto; border: 1px solid #ccc; padding: 10px; border-radius: 6px; background-color: #f9f9f9;">
+    <h3>Itens Cadastrados</h3>
+    <table border="1" cellpadding="6" cellspacing="0" style="width: 100%; font-size: 14px;">
+      <thead style="background-color: #003366; color: white; position: sticky; top: 0;">
+        <tr>
+          <th>ID</th><th>Descrição</th><th>Referência</th><th>Qtd</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for item in itens %}
+        <tr>
+          <td>{{ item.id }}</td>
+          <td>{{ item.descricao }}</td>
+          <td>{{ item.referencia }}</td>
+          <td>{{ item.quantidade }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+</div>
+{% endblock %}

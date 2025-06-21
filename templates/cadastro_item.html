@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block titulo %}Cadastrar Novo Item{% endblock %}
+
+{% block conteudo %}
+<h2>Cadastrar Novo Item</h2>
+
+<form method="POST">
+  <label for="descricao"><strong>Descrição:</strong></label><br>
+  <input type="text" name="descricao" id="descricao" required style="width: 100%; padding: 8px;"><br><br>
+
+  <label for="referencia"><strong>Referência:</strong></label><br>
+  <input type="text" name="referencia" id="referencia" required style="width: 100%; padding: 8px;"><br><br>
+
+  <button type="submit" style="background-color: #cc0000; color: white; padding: 10px 20px; border: none; font-weight: bold;">Salvar</button>
+</form>
+{% endblock %}

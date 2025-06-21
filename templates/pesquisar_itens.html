@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% block titulo %}Pesquisar Itens{% endblock %}
+
+{% block conteudo %}
+<h2>Pesquisar Itens</h2>
+
+<form method="POST">
+  <input type="text" name="termo" placeholder="ID, descrição ou referência" value="{{ termo }}" style="width: 300px; padding: 8px;">
+  <button type="submit" style="background-color: #cc0000; color: white; padding: 8px 15px; border: none;">Buscar</button>
+</form>
+
+{% if resultados %}
+  <h3 style="margin-top: 20px;">Resultados:</h3>
+  <div style="max-height: 400px; overflow-y: auto; border: 1px solid #ccc; border-radius: 6px;">
+    <table border="1" cellpadding="6" cellspacing="0" style="width: 100%; font-size: 14px;">
+      <thead style="background-color: #003366; color: white; position: sticky; top: 0;">
+        <tr>
+          <th>ID</th>
+          <th>Descrição</th>
+          <th>Quantidade</th>
+          <th>Estoque</th>
+          <th>Referência</th>
+          <th>Ação</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for item in resultados %}
+        <tr>
+          <td>{{ item.id }}</td>
+          <td>{{ item.descricao }}</td>
+          <td>{{ item.quantidade }}</td>
+          <td>{{ item.estoque }}</td>
+          <td>{{ item.referencia }}</td>
+          <td><a href="/itens/editar/{{ item.id }}">Editar</a></td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% elif termo %}
+  <p>Nenhum item encontrado para: <strong>{{ termo }}</strong></p>
+{% endif %}
+{% endblock %}

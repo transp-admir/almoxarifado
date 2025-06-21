@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Logs do Sistema</title>
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+        th, td {
+            padding: 8px 10px;
+            border: 1px solid #ccc;
+        }
+        th {
+            background-color: #cc0000;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f4f4f4;
+        }
+    </style>
+</head>
+<body>
+    <h1>Histórico de Operações</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Ação</th>
+                <th>Descrição</th>
+                <th>Data e Hora</th>
+                <th>Usuário</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for log in logs %}
+            <tr>
+                <td>{{ log.acao }}</td>
+                <td>{{ log.descricao }}</td>
+                <td>{{ log.data_hora }}</td>
+                <td>{{ log.usuario }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>

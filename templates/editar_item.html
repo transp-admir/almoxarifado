@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block titulo %}Editar Item{% endblock %}
+
+{% block conteudo %}
+<h2>Editar Item</h2>
+
+<form method="POST">
+  <label>Descrição:</label><br>
+  <input type="text" name="descricao" value="{{ item.descricao }}" style="width: 100%; padding: 8px;"><br><br>
+
+  <label>Quantidade:</label><br>
+  <input type="text" name="quantidade" value="{{ item.quantidade }}" style="width: 100%; padding: 8px;"><br><br>
+
+  <label>Estoque:</label><br>
+  <input type="text" name="estoque" value="{{ item.estoque }}" style="width: 100%; padding: 8px;"><br><br>
+
+  <label>Referência:</label><br>
+  <input type="text" name="referencia" value="{{ item.referencia }}" style="width: 100%; padding: 8px;"><br><br>
+
+  <button type="submit" style="background-color: #cc0000; color: white; padding: 10px 20px; border: none;">Salvar Alterações</button>
+</form>
+{% endblock %}
