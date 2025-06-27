@@ -1,12 +1,250 @@
+/* === Estilo global mínimo === */
 html, body {
   height: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
 }
 
-body {
+/* === PÁGINA DE LOGIN === */
+.pagina-login {
+  /* Fundo com imagem e desfoque */
+  background: url('/static/tela-fundo.jpg') no-repeat center center fixed;
+  background-size: cover;
+  backdrop-filter: blur(4px);
   display: flex;
   flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
-.conteudo {
+.pagina-login .login-container {
+  /* Caixa do formulário */
+  background-color: rgba(255, 255, 255, 0.95);
+  padding: 40px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  width: 100%;
+  max-width: 400px;
+}
+
+.pagina-login h2 {
+  /* Título */
+  text-align: center;
+  margin-bottom: 20px;
+  color: #cc0000;
+}
+
+.pagina-login label {
+  /* Labels dos campos */
+  font-weight: bold;
+  display: block;
+  margin-top: 10px;
+}
+
+.pagina-login input[type="text"],
+.pagina-login input[type="password"] {
+  /* Campos de texto e senha */
+  width: 100%;
+  padding: 10px;
+  margin-top: 5px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.pagina-login button {
+  /* Botão de envio */
+  width: 100%;
+  margin-top: 20px;
+  padding: 12px;
+  background-color: #cc0000;
+  color: white;
+  font-weight: bold;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.pagina-login button:hover {
+  background-color: #990000;
+}
+
+.pagina-login .mensagem {
+  /* Mensagens de erro ou status */
+  color: red;
+  text-align: center;
+  margin-top: 10px;
+}
+
+.pagina-login .mensagem.sucesso { color: green; }
+.pagina-login .mensagem.alerta { color: orange; }
+
+.pagina-login .footer {
+  /* Rodapé do login */
+  text-align: center;
+  font-size: 12px;
+  color: #777;
+  margin-top: 20px;
+}
+
+.pagina-login .loader-container {
+  /* Contêiner do loader */
+  display: none;
+  justify-content: center;
+  margin-bottom: 15px;
+}
+
+.pagina-login .gotinha {
+  /* Gota animada */
+  width: 10px;
+  height: 10px;
+  background: #cc0000;
+  border-radius: 50%;
+  animation: pingar 1.5s infinite;
+}
+
+@keyframes pingar {
+  0% { transform: translateY(0); opacity: 1; }
+  50% { transform: translateY(10px); opacity: 0.5; }
+  100% { transform: translateY(0); opacity: 1; }
+}
+
+/* === PÁGINA BASE === */
+.pagina-base {
+  /* Layout principal */
+  background-color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+}
+
+.pagina-base .topo header {
+  /* Cabeçalho com logo */
+  padding: 10px;
+  background-color: #f5f5f5;
+  display: flex;
+  align-items: center;
+}
+
+.pagina-base .topo img {
+  height: 60px;
+  margin-right: 15px;
+}
+
+.pagina-base .topo h2 {
+  flex: 1;
+  text-align: center;
+  color: black;
+  margin: 0;
+}
+
+.pagina-base .menu {
+  /* Menu horizontal */
+  background-color: #cc0000;
+  padding: 10px;
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+
+.pagina-base .menu a {
+  color: white;
+  text-decoration: none;
+  font-weight: bold;
+  padding: 8px 12px;
+  border-radius: 4px;
+}
+
+.pagina-base .menu a:hover,
+.pagina-base .menu a.ativo {
+  background-color: #990000;
+}
+
+.pagina-base .conteudo {
+  /* Área dinâmica */
+  padding: 20px;
   flex: 1;
 }
+
+.pagina-base .rodape {
+  /* Rodapé */
+  background-color: #003366;
+  color: white;
+  padding: 10px;
+  text-align: center;
+}
+
+.pagina-base .mensagem {
+  margin-bottom: 15px;
+  font-weight: bold;
+}
+
+.pagina-base .mensagem.sucesso { color: green; }
+.pagina-base .mensagem.erro { color: red; }
+
+
+.card-metrica {
+  background-color: #f9f9f9;
+  padding: 20px;
+  border-left: 6px solid #003366;
+  border-radius: 6px;
+  box-shadow: 0 0 5px rgba(0,0,0,0.1);
+}
+
+.card-metrica.destaque {
+  border-left: 6px solid #cc0000;
+}
+
+.card-metrica h3 {
+  margin: 0;
+  color: #333;
+  font-size: 16px;
+}
+
+.card-metrica p {
+  margin-top: 10px;
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.botao-atalho {
+  background-color: #cc0000;
+  color: white;
+  text-decoration: none;
+  padding: 12px 20px;
+  border-radius: 4px;
+  font-weight: bold;
+  display: inline-block;
+  transition: background 0.3s;
+}
+
+.botao-atalho:hover {
+  background-color: #990000;
+}
+
+/*pagina do cadastro de itens*/
+.form-cadastro input,
+.form-cadastro select,
+.form-cadastro textarea {
+  width: 100%;
+  padding: 10px;
+  margin-top: 4px;
+  margin-bottom: 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.form-cadastro button {
+  background-color: #cc0000;
+  color: white;
+  font-weight: bold;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 4px;
+  transition: background 0.3s;
+}
+
+.form-cadastro button:hover {
+  background-color: #990000;
+}
+

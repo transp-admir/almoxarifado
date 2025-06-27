@@ -2,42 +2,48 @@
 {% block titulo %}Pesquisar Itens{% endblock %}
 
 {% block conteudo %}
-<h2>Pesquisar Itens</h2>
 
-<form method="POST">
-  <input type="text" name="termo" placeholder="ID, descrição ou referência" value="{{ termo }}" style="width: 300px; padding: 8px;">
-  <button type="submit" style="background-color: #cc0000; color: white; padding: 8px 15px; border: none;">Buscar</button>
-</form>
+<div style="position: sticky; top: 0; background: white; z-index: 100; padding: 10px 0; border-bottom: 1px solid #ddd;">
+  <h2 style="margin: 0 0 10px;">🔍 Pesquisa de Itens</h2>
+  <form method="POST" style="margin: 0;">
+    <input type="text" name="termo" placeholder="Buscar por descrição, ID ou referência" value="{{ termo }}" style="width: 60%; padding: 8px;">
+    <button type="submit" style="padding: 8px 20px; background-color: #cc0000; color: white; border: none;">Buscar</button>
+  </form>
+</div>
+<div style="max-height: 500px; overflow-y: auto; border: 1px solid #ccc; border-radius: 6px;">
+  <table border="1" cellpadding="8" cellspacing="0" style="width: 100%; border-collapse: collapse;">
+    <thead>
+      <tr>
+        <th style="position: sticky; top: 0; background-color: #f9f9f9; z-index: 2;">ID</th>
+        <th style="position: sticky; top: 0; background-color: #f9f9f9; z-index: 2;">Descrição</th>
+        <th style="position: sticky; top: 0; background-color: #f9f9f9; z-index: 2;">Referência</th>
+        <th style="position: sticky; top: 0; background-color: #f9f9f9; z-index: 2;">Categoria</th>
+        <th style="position: sticky; top: 0; background-color: #f9f9f9; z-index: 2;">Unidade</th>
+        <th style="position: sticky; top: 0; background-color: #f9f9f9; z-index: 2;">Qtd</th>
+        <th style="position: sticky; top: 0; background-color: #f9f9f9; z-index: 2;">Estoque</th>
+        <th style="position: sticky; top: 0; background-color: #f9f9f9; z-index: 2;">Mínimo</th>
+        <th style="position: sticky; top: 0; background-color: #f9f9f9; z-index: 2;">Observações</th>
+        <th style="position: sticky; top: 0; background-color: #f9f9f9; z-index: 2;">Ações</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for item in resultados %}
+      <tr {% if item['quantidade'] < (item['minimo'] or 0) %} style="background-color: #ffe6e6;" {% endif %}>
+        <td>{{ item['id'] }}</td>
+        <td>{{ item['descricao'] }}</td>
+        <td>{{ item['referencia'] }}</td>
+        <td>{{ item['categoria'] or '-' }}</td>
+        <td>{{ item['unidade'] or '-' }}</td>
+        <td style="text-align: center;">{{ item['quantidade'] }}</td>
+        <td>{{ item['estoque'] or '-' }}</td>
+        <td style="text-align: center;">{{ item['minimo'] or '0' }}</td>
+        <td>{{ item['observacoes'] or '-' }}</td>
+        <td><a href="/itens/editar/{{ item['id'] }}">✏️ Editar</a></td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
 
-{% if resultados %}
-  <h3 style="margin-top: 20px;">Resultados:</h3>
-  <div style="max-height: 400px; overflow-y: auto; border: 1px solid #ccc; border-radius: 6px;">
-    <table border="1" cellpadding="6" cellspacing="0" style="width: 100%; font-size: 14px;">
-      <thead style="background-color: #003366; color: white; position: sticky; top: 0;">
-        <tr>
-          <th>ID</th>
-          <th>Descrição</th>
-          <th>Quantidade</th>
-          <th>Estoque</th>
-          <th>Referência</th>
-          <th>Ação</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for item in resultados %}
-        <tr>
-          <td>{{ item.id }}</td>
-          <td>{{ item.descricao }}</td>
-          <td>{{ item.quantidade }}</td>
-          <td>{{ item.estoque }}</td>
-          <td>{{ item.referencia }}</td>
-          <td><a href="/itens/editar/{{ item.id }}">Editar</a></td>
-        </tr>
-        {% endfor %}
-      </tbody>
-    </table>
-  </div>
-{% elif termo %}
-  <p>Nenhum item encontrado para: <strong>{{ termo }}</strong></p>
-{% endif %}
+
 {% endblock %}

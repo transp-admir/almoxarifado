@@ -2,15 +2,42 @@
 {% block titulo %}Cadastrar Novo Item{% endblock %}
 
 {% block conteudo %}
-<h2>Cadastrar Novo Item</h2>
+<h2 style="margin-bottom: 20px;">🆕 Novo Item de Estoque</h2>
 
-<form method="POST">
-  <label for="descricao"><strong>Descrição:</strong></label><br>
-  <input type="text" name="descricao" id="descricao" required style="width: 100%; padding: 8px;"><br><br>
+<form method="POST" class="form-cadastro" style="max-width: 600px;">
+  <label><strong>Descrição:</strong></label>
+  <input type="text" name="descricao" required placeholder="Nome do item" autofocus>
 
-  <label for="referencia"><strong>Referência:</strong></label><br>
-  <input type="text" name="referencia" id="referencia" required style="width: 100%; padding: 8px;"><br><br>
+  <label><strong>Referência:</strong></label>
+  <input type="text" name="referencia" required placeholder="Código ou número interno">
 
-  <button type="submit" style="background-color: #cc0000; color: white; padding: 10px 20px; border: none; font-weight: bold;">Salvar</button>
+  <label><strong>Categoria:</strong></label>
+  <select name="categoria" required>
+    <option value="" disabled selected>Selecione uma categoria</option>
+    <option value="FERRAMENTA">Ferramenta</option>
+    <option value="PEÇA">Peça</option>
+    <option value="MATERIAL">Material</option>
+    <option value="OUTRO">Outro</option>
+  </select>
+
+  <label><strong>Estoque Padrão:</strong></label>
+  <input type="text" name="estoque" value="TRANSP" required placeholder="Nome do almoxarifado">
+
+  <label><strong>Unidade de Medida:</strong></label>
+  <select name="unidade" required>
+    <option value="UN">UN</option>
+    <option value="CX">CX</option>
+    <option value="KG">KG</option>
+    <option value="M">M</option>
+    <option value="L">L</option>
+  </select>
+
+  <label><strong>Estoque Mínimo:</strong></label>
+  <input type="number" name="minimo" value="1" min="0">
+
+  <label><strong>Observações:</strong></label>
+  <textarea name="obs" rows="3" placeholder="Algum detalhe relevante sobre este item..."></textarea>
+
+  <button type="submit">💾 Salvar Cadastro</button>
 </form>
 {% endblock %}

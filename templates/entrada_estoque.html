@@ -4,6 +4,13 @@
 {% block conteudo %}
 <h2>Registrar Entrada de Itens</h2>
 
+<!-- 🔍 Campo de pesquisa destacado fora da tabela -->
+<form method="POST" action="/itens/entrada" style="margin-bottom: 20px;">
+  <input type="text" name="termo" placeholder="Buscar item..." style="padding: 8px; width: 60%;" value="{{ termo or '' }}">
+  <button type="submit" name="acao" value="buscar" style="padding: 8px;">🔍 Pesquisar</button>
+</form>
+
+
 <div style="display: flex; gap: 30px; align-items: flex-start; flex-wrap: wrap;">
 
   <!-- Formulário de Entrada -->
