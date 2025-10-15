@@ -11,9 +11,10 @@
     <p>{{ total_estoque }}</p>
   </div>
   <div style="flex: 1; min-width: 200px;" class="card-metrica">
-    <h3>Itens Zerados</h3>
-    <p style="color: red;">{{ itens_zerados }}</p>
-  </div>
+  <h3>Itens Zerados</h3><p>
+  <a href="/itens/pesquisar?quantidade=0" style="color: red; text-decoration: underline;">{{ itens_zerados }}</a>
+  </p>
+    </div>
   <div style="flex: 1; min-width: 200px;" class="card-metrica">
     <h3>Entradas Hoje</h3>
     <p>{{ entradas_hoje }}</p>
@@ -67,4 +68,3 @@
   });
 </script>
 {% endblock %}
-

@@ -111,6 +111,15 @@ def pesquisar_itens():
             FROM itens
             WHERE descricao LIKE ? OR CAST(id AS TEXT) LIKE ? OR referencia LIKE ?
         """, (like_term, like_term, like_term))
+
+    elif request.method == 'GET' and request.args.get('quantidade') == '0':
+        cursor.execute("""
+            SELECT id, descricao, quantidade, estoque, referencia, categoria, unidade, minimo, observacoes
+            FROM itens
+            WHERE quantidade = 0
+            ORDER BY id ASC
+        """)
+
     else:
         cursor.execute("""
             SELECT id, descricao, quantidade, estoque, referencia, categoria, unidade, minimo, observacoes
@@ -121,8 +130,7 @@ def pesquisar_itens():
     resultados = cursor.fetchall()
     conn.close()
 
-    return render_template("pesquisar_itens.html", resultados=resultados, termo=termo)
-
+    return render_template('pesquisar_itens.html', resultados=resultados, termo=termo)
 
 @itens_bp.route('/entrada', methods=['GET', 'POST'])
 def entrada_estoque():
@@ -219,4 +227,30 @@ def entrada_estoque():
                            estoque=estoque_nome, termo=termo)
 
 dashboard_bp = Blueprint('dashboard', __name__, url_prefix='/')
+
+@itens_bp.route('/remover/<int:id>', methods=['POST'])
+def remover_item(id):
+    tipo = session.get('tipo')
+    if tipo != 'MASTER':
+        flash("Acesso negado: apenas usuários MASTER podem remover itens.", "erro")
+        return redirect('/itens/pesquisar')
+
+    conn = conectar_db()
+    cursor = conn.cursor()
+    cursor.execute("SELECT descricao, referencia FROM itens WHERE id = ?", (id,))
+    item = cursor.fetchone()
+
+    if not item:
+        conn.close()
+        flash("Item não encontrado.", "erro")
+        return redirect('/itens/pesquisar')
+
+    cursor.execute("DELETE FROM itens WHERE id = ?", (id,))
+    conn.commit()
+    conn.close()
+
+    registrar_log("REMOÇÃO", f"Item removido: {item['descricao']} (REF: {item['referencia']})", session.get('usuario', 'Sistema'))
+    flash("Item removido com sucesso!", "sucesso")
+    return redirect('/itens/pesquisar')
+
 

@@ -10,6 +10,7 @@ from routes.usuarios import usuarios_bp
 from routes.logs import logs_bp
 from routes.dashboard import dashboard_bp  # ✅ Aqui em cima com os demais
 
+
 app = Flask(__name__)
 app.secret_key = 'chave_secreta_segura'
 app.permanent_session_lifetime = timedelta(minutes=15)
@@ -21,6 +22,8 @@ app.register_blueprint(saidas_bp)
 app.register_blueprint(usuarios_bp)
 app.register_blueprint(logs_bp)
 app.register_blueprint(dashboard_bp)  # ✅ Registrado no momento certo
+
+
 
 # Middleware
 @app.before_request

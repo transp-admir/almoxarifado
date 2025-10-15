@@ -1,69 +1,45 @@
-{% extends 'base.html' %}
-{% block titulo %}Painel Inicial{% endblock %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <title>Login - Almoxarifado</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body class="pagina-login">
+  <div class="login-container">
+    <h2>Gestão de Almoxarifado</h2>
 
-{% block conteudo %}
-<h2 style="margin-bottom: 20px;">📊 Visão Geral do Almoxarifado</h2>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for categoria, msg in messages %}
+          <div class="mensagem {{ categoria }}">{{ msg }}</div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
 
-<!-- Estatísticas em cards -->
-<div style="display: flex; flex-wrap: wrap; gap: 20px; margin-bottom: 40px;">
-  <div style="flex: 1; min-width: 200px;" class="card-metrica destaque">
-    <h3>Total em Estoque</h3>
-    <p>{{ total_estoque }}</p>
+    <div class="loader-container" id="loader">
+      <div class="gotinha"></div>
+    </div>
+
+    <form method="POST">
+      <label for="usuario">Usuário</label>
+      <input type="text" id="usuario" name="usuario" required />
+
+      <label for="senha">Senha</label>
+      <input type="password" id="senha" name="senha" required />
+
+      <button type="submit">Entrar</button>
+    </form>
+
+    <div class="footer">64Bits Informática &copy; {{ ano }}</div>
   </div>
-  <div style="flex: 1; min-width: 200px;" class="card-metrica">
-    <h3>Itens Zerados</h3>
-    <p style="color: red;">{{ itens_zerados }}</p>
-  </div>
-  <div style="flex: 1; min-width: 200px;" class="card-metrica">
-    <h3>Entradas Hoje</h3>
-    <p>{{ entradas_hoje }}</p>
-  </div>
-  <div style="flex: 1; min-width: 200px;" class="card-metrica">
-    <h3>Saídas Hoje</h3>
-    <p>{{ saidas_hoje }}</p>
-  </div>
-</div>
 
-<!-- Gráfico de movimentação -->
-<h3 style="margin-bottom: 10px;">📈 Movimentação da Semana</h3>
-<canvas id="graficoMovimentacoes" width="500" height="100" style="max-width: 100%;"></canvas>
-
-<!-- Atalhos rápidos -->
-<h3 style="margin-top: 40px;">⚡ Acesso Rápido</h3>
-<div style="display: flex; flex-wrap: wrap; gap: 15px;">
-  <a href="/itens/cadastro" class="botao-atalho">➕ Cadastrar Item</a>
-  <a href="/itens/entrada" class="botao-atalho">📥 Entrada de Estoque</a>
-  <a href="/saidas/registrar" class="botao-atalho">🚚 Registrar Saída</a>
-  <a href="/itens/pesquisar" class="botao-atalho">🔍 Pesquisar Itens</a>
-  <a href="/saidas/relatorio" class="botao-atalho">📄 Relatório</a>
-</div>
-
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script>
-  const ctx = document.getElementById('graficoMovimentacoes').getContext('2d');
-  new Chart(ctx, {
-    type: 'bar',
-    data: {
-      labels: {{ dias_labels|safe }},
-      datasets: [
-        {
-          label: 'Entradas',
-          data: {{ entradas_data|safe }},
-          backgroundColor: 'rgba(0, 128, 0, 0.7)'
-        },
-        {
-          label: 'Saídas',
-          data: {{ saidas_data|safe }},
-          backgroundColor: 'rgba(204, 0, 0, 0.7)'
-        }
-      ]
-    },
-    options: {
-      responsive: true,
-      scales: {
-        y: { beginAtZero: true }
-      }
-    }
-  });
-</script>
-{% endblock %}
+  <script>
+    const form = document.querySelector('form');
+    const loader = document.getElementById('loader');
+    form.addEventListener('submit', () => {
+      loader.style.display = 'flex';
+    });
+  </script>
+</body>
+</html>

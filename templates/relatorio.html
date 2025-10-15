@@ -3,15 +3,13 @@
 
 {% block conteudo %}
 <h2>Relatório de Saídas</h2>
-<form method="POST" action="/saidas/relatorio">
+
+<form method="POST" action="/saidas/relatorio" style="margin-bottom: 20px;">
   <label>Filtrar por Placa:</label>
   <input type="text" name="placa" value="{{ placa }}" placeholder="Ex: ABC1234 ou ABC" style="padding: 6px;">
-
   <button type="submit" name="acao" value="buscar">🔎 Buscar</button>
   <button type="submit" name="acao" value="pdf" style="margin-left: 10px; background-color: #003366; color: white;">📄 Gerar PDF</button>
 </form>
-
-
 
 {% if registros %}
   <div style="max-height: 400px; overflow-y: auto; border: 1px solid #ccc; border-radius: 6px;">
@@ -24,17 +22,27 @@
           <th>Placa</th>
           <th>Data</th>
           <th>Referência</th>
+          {% if session.get('tipo') == 'MASTER' %}
+            <th>Ações</th>
+          {% endif %}
         </tr>
       </thead>
       <tbody>
-        {% for item in registros %}
+        {% for saida in registros %}
         <tr>
-          <td>{{ item.item_id }}</td>
-          <td>{{ item.descricao }}</td>
-          <td>{{ item.quantidade }}</td>
-          <td>{{ item.placa }}</td>
-          <td>{{ item.data_saida }}</td>
-          <td>{{ item.referencia }}</td>
+          <td>{{ saida.item_id }}</td>
+          <td>{{ saida.descricao }}</td>
+          <td>{{ saida.quantidade }}</td>
+          <td>{{ saida.placa }}</td>
+          <td>{{ saida.data_saida }}</td>
+          <td>{{ saida.referencia }}</td>
+          {% if session.get('tipo') == 'MASTER' %}
+          <td>
+            <form method="POST" action="/saidas/remover-saida/{{ saida.id }}" style="display: inline;" onsubmit="return confirm('Remover esta saída?')">
+              <button type="submit" class="botao-remover">🗑️</button>
+            </form>
+          </td>
+          {% endif %}
         </tr>
         {% endfor %}
       </tbody>

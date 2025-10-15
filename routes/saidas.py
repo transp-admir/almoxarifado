@@ -153,14 +153,14 @@ def relatorio():
 
         if placa:
             cursor.execute("""
-                SELECT item_id, descricao, quantidade, placa, data_saida, referencia
+                SELECT id, item_id, descricao, quantidade, placa, data_saida, referencia
                 FROM saidas
                 WHERE placa LIKE ?
                 ORDER BY data_saida DESC
             """, (f"%{placa}%",))
         else:
             cursor.execute("""
-                SELECT item_id, descricao, quantidade, placa, data_saida, referencia
+                SELECT id, item_id, descricao, quantidade, placa, data_saida, referencia
                 FROM saidas
                 ORDER BY data_saida DESC
             """)
@@ -187,7 +187,7 @@ def relatorio():
 
     else:
         cursor.execute("""
-            SELECT item_id, descricao, quantidade, placa, data_saida, referencia
+            SELECT id, item_id, descricao, quantidade, placa, data_saida, referencia
             FROM saidas
             ORDER BY data_saida DESC
         """)
@@ -206,17 +206,19 @@ def relatorio_pdf():
 
     if placa:
         cursor.execute("""
-            SELECT item_id, descricao, quantidade, placa, data_saida, referencia
+            SELECT id, item_id, descricao, quantidade, placa, data_saida, referencia
             FROM saidas
             WHERE placa LIKE ?
             ORDER BY data_saida DESC
         """, (f"%{placa}%",))
+
     else:
         cursor.execute("""
-            SELECT item_id, descricao, quantidade, placa, data_saida, referencia
+            SELECT id, item_id, descricao, quantidade, placa, data_saida, referencia
             FROM saidas
             ORDER BY data_saida DESC
         """)
+
 
     registros = cursor.fetchall()
     conn.close()
@@ -280,3 +282,35 @@ def editar_saida(item_id, data_saida):
         return redirect('/saidas/relatorio')
 
     return render_template("editar_saida.html", item_id=item_id, saida=saida, pode_modificar=True)
+
+
+@saidas_bp.route('/remover-saida/<int:id>', methods=['POST'])
+def remover_saida_unica(id):
+    tipo = session.get('tipo')
+    if tipo != 'MASTER':
+        flash("Apenas usuários MASTER podem remover registros de saída.", "erro")
+        return redirect('/saidas/relatorio')
+
+    conn = conectar_db()
+    cursor = conn.cursor()
+
+    # Busca a saída
+    cursor.execute("SELECT item_id, descricao, quantidade, placa FROM saidas WHERE id = ?", (id,))
+    saida = cursor.fetchone()
+
+    if not saida:
+        flash("Registro de saída não encontrado.", "erro")
+        conn.close()
+        return redirect('/saidas/relatorio')
+
+    # Atualiza o estoque
+    cursor.execute("UPDATE itens SET quantidade = quantidade + ? WHERE id = ?", (saida['quantidade'], saida['item_id']))
+
+    # Remove a saída
+    cursor.execute("DELETE FROM saidas WHERE id = ?", (id,))
+    conn.commit()
+    conn.close()
+
+    registrar_log("REMOÇÃO", f"Removida saída: {saida['descricao']} - Qtd: {saida['quantidade']} - Placa: {saida['placa']}", session.get('usuario', 'web'))
+    flash("Saída removida e estoque restaurado com sucesso!", "sucesso")
+    return redirect('/saidas/relatorio')

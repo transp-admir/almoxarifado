@@ -15,7 +15,8 @@
   <div style="flex: 1; min-width: 300px;">
     <form method="POST">
       <label><strong>ID do Item:</strong></label><br>
-      <input type="text" name="item_id" value="{{ item_id }}" required placeholder="Digite o ID do item" style="width: 100%; padding: 8px;"><br><br>
+      <input type="text" name="item_id" value="{{ item_id }}" required placeholder="Digite o ID do item" style="width: 100%; padding: 8px;">
+      <button type="submit" name="acao" value="buscar_id" style="margin-top: 8px; padding: 8px;">🔍</button><br><br>
 
       <label><strong>Nome do Item:</strong></label><br>
       <input type="text" value="{{ descricao }}" readonly style="width: 100%; padding: 8px;"><br><br>
