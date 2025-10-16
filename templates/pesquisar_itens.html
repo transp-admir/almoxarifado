@@ -8,23 +8,23 @@
   <form method="POST" style="margin: 0;">
     <input type="text" name="termo" placeholder="Buscar por descrição, ID ou referência" value="{{ termo }}" style="width: 60%; padding: 8px;">
     <button type="submit" style="padding: 8px 20px; background-color: #cc0000; color: white; border: none;">Buscar</button>
+    <a href="/itens/relatorio_csv" class="button" style="padding: 8px 20px; background-color: #007bff; color: white; border: none; text-decoration: none;">Baixar CSV</a>
   </form>
 </div>
-
 <div style="max-height: 500px; overflow-y: auto; border: 1px solid #ccc; border-radius: 6px;">
   <table border="1" cellpadding="8" cellspacing="0" style="width: 100%; border-collapse: collapse;">
     <thead>
       <tr>
-        <th style="position: sticky; top: 0; background-color: #f9f9f9;">ID</th>
-        <th style="position: sticky; top: 0; background-color: #f9f9f9;">Descrição</th>
-        <th style="position: sticky; top: 0; background-color: #f9f9f9;">Referência</th>
-        <th style="position: sticky; top: 0; background-color: #f9f9f9;">Categoria</th>
-        <th style="position: sticky; top: 0; background-color: #f9f9f9;">Unidade</th>
-        <th style="position: sticky; top: 0; background-color: #f9f9f9;">Qtd</th>
-        <th style="position: sticky; top: 0; background-color: #f9f9f9;">Estoque</th>
-        <th style="position: sticky; top: 0; background-color: #f9f9f9;">Mínimo</th>
-        <th style="position: sticky; top: 0; background-color: #f9f9f9;">Observações</th>
-        <th style="position: sticky; top: 0; background-color: #f9f9f9;">Ações</th>
+        <th style="position: sticky; top: 0; background-color: #f9f9f9; z-index: 2;">ID</th>
+        <th style="position: sticky; top: 0; background-color: #f9f9f9; z-index: 2;">Descrição</th>
+        <th style="position: sticky; top: 0; background-color: #f9f9f9; z-index: 2;">Referência</th>
+        <th style="position: sticky; top: 0; background-color: #f9f9f9; z-index: 2;">Categoria</th>
+        <th style="position: sticky; top: 0; background-color: #f9f9f9; z-index: 2;">Unidade</th>
+        <th style="position: sticky; top: 0; background-color: #f9f9f9; z-index: 2;">Qtd</th>
+        <th style="position: sticky; top: 0; background-color: #f9f9f9; z-index: 2;">Estoque</th>
+        <th style="position: sticky; top: 0; background-color: #f9f9f9; z-index: 2;">Mínimo</th>
+        <th style="position: sticky; top: 0; background-color: #f9f9f9; z-index: 2;">Observações</th>
+        <th style="position: sticky; top: 0; background-color: #f9f9f9; z-index: 2;">Ações</th>
       </tr>
     </thead>
     <tbody>
@@ -39,18 +39,12 @@
         <td>{{ item['estoque'] or '-' }}</td>
         <td style="text-align: center;">{{ item['minimo'] or '0' }}</td>
         <td>{{ item['observacoes'] or '-' }}</td>
-        <td>
-          <a href="/itens/editar/{{ item['id'] }}">✏️ Editar</a>
-          {% if session.get('tipo') == 'MASTER' %}
-            <form method="POST" action="/itens/remover/{{ item['id'] }}" style="display: inline;" onsubmit="return confirm('Tem certeza que deseja remover este item?')">
-              <button type="submit" class="botao-remover">🗑️</button>
-            </form>
-          {% endif %}
-        </td>
+        <td><a href="/itens/editar/{{ item['id'] }}">✏️ Editar</a></td>
       </tr>
       {% endfor %}
     </tbody>
   </table>
 </div>
+
 
 {% endblock %}

@@ -1,6 +1,8 @@
-from flask import Blueprint, render_template, request, redirect, flash, session
+from flask import Blueprint, render_template, request, redirect, flash, session, Response
 from models import conectar_db, registrar_log
 import datetime
+import csv
+import io
 
 
 itens_bp = Blueprint('itens', __name__, url_prefix='/itens')
@@ -110,6 +112,7 @@ def pesquisar_itens():
             SELECT id, descricao, quantidade, estoque, referencia, categoria, unidade, minimo, observacoes
             FROM itens
             WHERE descricao LIKE ? OR CAST(id AS TEXT) LIKE ? OR referencia LIKE ?
+            ORDER BY descricao ASC
         """, (like_term, like_term, like_term))
 
     elif request.method == 'GET' and request.args.get('quantidade') == '0':
@@ -117,20 +120,49 @@ def pesquisar_itens():
             SELECT id, descricao, quantidade, estoque, referencia, categoria, unidade, minimo, observacoes
             FROM itens
             WHERE quantidade = 0
-            ORDER BY id ASC
+            ORDER BY descricao ASC
         """)
 
     else:
         cursor.execute("""
             SELECT id, descricao, quantidade, estoque, referencia, categoria, unidade, minimo, observacoes
             FROM itens
-            ORDER BY id ASC
+            ORDER BY descricao ASC
         """)
 
     resultados = cursor.fetchall()
     conn.close()
 
     return render_template('pesquisar_itens.html', resultados=resultados, termo=termo)
+
+@itens_bp.route('/relatorio_csv')
+def relatorio_csv():
+    conn = conectar_db()
+    cursor = conn.cursor()
+    cursor.execute("""
+        SELECT id, descricao, referencia, quantidade
+        FROM itens
+        ORDER BY descricao ASC
+    """)
+    resultados = cursor.fetchall()
+    conn.close()
+
+    output = io.StringIO()
+    writer = csv.writer(output, delimiter=';')
+
+    writer.writerow(['ID', 'Descricao', 'Referencia', 'Quantidade'])
+
+    for item in resultados:
+        writer.writerow([item['id'], item['descricao'], item['referencia'], item['quantidade']])
+
+    output.seek(0)
+
+    return Response(
+        output.getvalue().encode('utf-8-sig'),
+        mimetype="text/csv; charset=utf-8",
+        headers={"Content-Disposition": "attachment;filename=relatorio_almoxarifado.csv"}
+    )
+
 
 @itens_bp.route('/entrada', methods=['GET', 'POST'])
 def entrada_estoque():
@@ -252,5 +284,3 @@ def remover_item(id):
     registrar_log("REMOÇÃO", f"Item removido: {item['descricao']} (REF: {item['referencia']})", session.get('usuario', 'Sistema'))
     flash("Item removido com sucesso!", "sucesso")
     return redirect('/itens/pesquisar')
-
-

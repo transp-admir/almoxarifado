@@ -6,6 +6,8 @@ import os
 DB_PATH = os.path.join(os.path.dirname(__file__), 'database/almoxarifado.db')
 
 def conectar_db():
+    # Garante que o diretório do banco de dados exista
+    os.makedirs(os.path.dirname(DB_PATH), exist_ok=True)
     conn = sqlite3.connect(DB_PATH)
     conn.row_factory = sqlite3.Row
     return conn
@@ -32,7 +34,11 @@ def criar_tabelas():
             descricao TEXT NOT NULL,
             quantidade INTEGER,
             estoque TEXT,
-            referencia TEXT
+            referencia TEXT,
+            categoria TEXT,
+            unidade TEXT,
+            minimo INTEGER,
+            observacoes TEXT
         )
     """)
 
@@ -93,6 +99,18 @@ def criar_tabelas():
     """)
 
     conn.commit()
+
+    # Adicionar colunas ausentes à tabela de itens se não existirem
+    try:
+        cursor.execute("ALTER TABLE itens ADD COLUMN categoria TEXT")
+        cursor.execute("ALTER TABLE itens ADD COLUMN unidade TEXT")
+        cursor.execute("ALTER TABLE itens ADD COLUMN minimo INTEGER")
+        cursor.execute("ALTER TABLE itens ADD COLUMN observacoes TEXT")
+        conn.commit()
+    except sqlite3.OperationalError:
+        # Colunas já existem, o que é esperado após a primeira execução
+        pass
+
     conn.close()
 
 # Executa a criação das tabelas automaticamente ao importar

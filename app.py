@@ -8,8 +8,7 @@ from routes.itens import itens_bp
 from routes.saidas import saidas_bp
 from routes.usuarios import usuarios_bp
 from routes.logs import logs_bp
-from routes.dashboard import dashboard_bp  # ✅ Aqui em cima com os demais
-
+from routes.dashboard import dashboard_bp
 
 app = Flask(__name__)
 app.secret_key = 'chave_secreta_segura'
@@ -21,9 +20,7 @@ app.register_blueprint(itens_bp)
 app.register_blueprint(saidas_bp)
 app.register_blueprint(usuarios_bp)
 app.register_blueprint(logs_bp)
-app.register_blueprint(dashboard_bp)  # ✅ Registrado no momento certo
-
-
+app.register_blueprint(dashboard_bp)
 
 # Middleware
 @app.before_request
@@ -41,7 +38,7 @@ def proteger_rotas():
         return redirect('/')
 
 
-@app.route('/home')  # OBS: esse pode ser removido se o dashboard cuidar do /home
+@app.route('/home')
 def home():
     return render_template('home.html', ano=datetime.datetime.now().year)
 
